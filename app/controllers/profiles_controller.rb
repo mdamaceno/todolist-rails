@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
+  before_action :find_profile, only: %i[show edit update change_privacy private_page]
   before_action :public?, except: %i[private_page]
  
   def show 
@@ -44,6 +45,7 @@ class ProfilesController < ApplicationController
   private 
 
   def profile_params
+    params.require(:profile).permit(:nickname, :bio, :avatar)
   end 
 
   def privacy_params
@@ -55,10 +57,8 @@ class ProfilesController < ApplicationController
   end
 
   def public?
-    unless (current_user.profile == @profile)
-      unless @profile.share
-        redirect_to private_page_profile_path(@profile)
-      end
+    unless (current_user.profile == @profile) && @profile.share
+      redirect_to private_page_profile_path(@profile)
     end
   end
 

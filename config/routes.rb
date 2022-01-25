@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "home#index"
 
-  resources :tasks 
+  resources :tasks do
+    collection do
+      resources :reports, only: :index, controller: 'task_reports'
+    end
+  end
 
   resources :profiles, only: %i[show new create update edit] do
     get 'private_page', on: :member

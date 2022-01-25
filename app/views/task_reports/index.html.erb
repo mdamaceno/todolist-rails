@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Tarefas completas</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Task (ID)</th>
+            <th>Comment</th>
+            <th>Status</th>
+          </tr> 
+        </thead>
+        <tbody>
+          <% @tasks.each do |task| %>
+            <% if task.comments.size > 0 %>
+              <% task.comments.each do |comment| %>
+                <tr>
+                  <td><%= task.id %></td>
+                  <td><%= comment.body %></td>
+                  <td><%= task.status %></td>
+                </tr>
+              <% end %>
+            <% else %>
+              <tr>
+                <td><%= task.id %></td>
+                <td></td>
+                <td><%= task.status %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

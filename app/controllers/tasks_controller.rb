@@ -11,9 +11,21 @@ class TasksController < ApplicationController
   end
 
   def new
+    @task = Task.new
   end
 
   def create
+    @task = current_user.tasks.new(task_params)
+
+    respond_to do |format|
+      if @task.save
+        format.html do
+          redirect_to tasks_url, notice: 'Task was successfully created.'
+        end
+      else
+        format.html { render :new, status: :unprocessable_entity }
+      end
+    end
   end
 
   def edit
@@ -34,6 +46,7 @@ class TasksController < ApplicationController
   private
 
   def task_params
+    params.require(:task).permit(:title, :description, :status, :priority)
   end  
 
   def comment_params

@@ -43,6 +43,11 @@ class TasksController < ApplicationController
   end
 
   def destroy
+    @task.destroy
+
+    respond_to do |format|
+      format.html { redirect_to tasks_url, notice: 'Task was successfully deleted' }
+    end
   end
 
   def complete

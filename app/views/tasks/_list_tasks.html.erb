@@ -3,15 +3,5 @@
 </div>
 
 <% tasks.each do |task| %>
-<div class="col-md-12 mb-3">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><%= task.title %></h5>
-      <%= task.description %>
-      <p><small>Created at <%= task.created_at %></small></p>
-      <%= link_to 'Edit', edit_task_path(task), class: 'card-link' %>
-      <%= link_to 'Destroy', task_path(task), method: :delete, class: 'card-link text-danger', data: { confirm: 'Are you sure?' } %>
-    </div>
-  </div>
-</div>
+  <%= render 'task', task: task %>
 <% end %>

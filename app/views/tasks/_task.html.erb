@@ -1,14 +1,12 @@
-<div class="col-md-12 mb-3">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title"><%= link_to task.title, task_path(task) %></h5>
-      <%= task.description %>
-      <p><small>Created at <%= task.created_at %></small></p>
-      <p><small>Status: <%= task.status.titleize %></small></p>
-      <%= render 'tasks/priority_badge', task: task %>
-      <%= link_to 'Edit', edit_task_path(task), class: 'card-link' %>
-      <%= link_to 'Destroy', task_path(task), method: :delete, class: 'card-link text-danger', data: { confirm: 'Are you sure?' } %>
-    </div>
+<div class="card mt-3">
+  <div class="card-body">
+    <h5 class="card-title"><%= link_to task.title, task_path(task) %></h5>
+    <%= task.description %>
+    <p><small>Created at <%= task.created_at %></small></p>
+    <p><small>Status: <%= task.status.titleize %></small></p>
+    <%= render 'tasks/priority_badge', task: task %>
+    <%= link_to 'Edit', edit_task_path(task), class: 'card-link' %>
+    <%= link_to 'Destroy', task_path(task), method: :delete, class: 'card-link text-danger', data: { confirm: 'Are you sure?' } %>
   </div>
 </div>
 

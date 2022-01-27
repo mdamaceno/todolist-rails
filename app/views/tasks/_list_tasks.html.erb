@@ -2,6 +2,16 @@
   <h2>Tasks</h2>
 </div>
 
-<% tasks.each do |task| %>
-  <%= render 'task', task: task %>
-<% end %>
+<div class="col-md-6">
+  <strong>Incomplete</strong>
+  <% not_completed_tasks.each do |task| %>
+    <%= render 'task', task: task %>
+  <% end %>
+</div>
+
+<div class="col-md-6">
+  <strong>Complete</strong>
+  <% completed_tasks.each do |task| %>
+    <%= render 'task', task: task %>
+  <% end %>
+</div>

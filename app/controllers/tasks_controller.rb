@@ -5,7 +5,8 @@ class TasksController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[search]
     
   def index
-    @tasks = current_user.tasks.order(status: :desc, priority: :desc)
+    @completed_tasks = current_user.tasks.where(status: Task.statuses[:complete]).order(priority: :desc)
+    @not_completed_tasks = current_user.tasks.where(status: Task.statuses[:incomplete]).order(priority: :desc)
   end
 
   def show 

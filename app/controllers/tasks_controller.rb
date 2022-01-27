@@ -5,7 +5,7 @@ class TasksController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[search]
     
   def index
-    @tasks = current_user.tasks.order(priority: :desc, status: :desc, created_at: :desc)
+    @tasks = current_user.tasks.order(status: :desc, priority: :desc)
   end
 
   def show 
@@ -33,6 +33,13 @@ class TasksController < ApplicationController
   end
 
   def update 
+    respond_to do |format|
+      if @task.update(task_params)
+        format.html { redirect_to tasks_url, notice: 'Task was successfully updated.' }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+      end
+    end
   end
 
   def destroy
@@ -56,6 +63,10 @@ class TasksController < ApplicationController
   def sanitize_sql_like(string, escape_character = "\\")
     pattern = Regexp.union(escape_character, "%", "_")
     string.gsub(pattern) { |x| [escape_character, x].join }
+  end
+
+  def find_task
+    @task = current_user.tasks.find(params[:id])
   end
 end
 

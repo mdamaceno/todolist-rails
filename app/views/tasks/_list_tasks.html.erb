@@ -9,6 +9,8 @@
       <h5 class="card-title"><%= task.title %></h5>
       <%= task.description %>
       <p><small>Created at <%= task.created_at %></small></p>
+      <%= link_to 'Edit', edit_task_path(task), class: 'card-link' %>
+      <a href="#" class="card-link text-danger">Destroy</a>
     </div>
   </div>
 </div>

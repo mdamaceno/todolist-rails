@@ -19,8 +19,7 @@
 
   <div class="mt-3">
     <%= form.label :status, class: "form-label" %>
-    <%= form.select :status,
-      options_for_select(Task.statuses.map { |key, value| [key.titleize, Task.statuses.key(value)] }),
+    <%= form.select :status, Task.statuses.map { |key, value| [key.titleize, key] },
       { selected: task.status },
       class: 'form-control'
     %>
@@ -28,8 +27,7 @@
 
   <div class="mt-3">
     <%= form.label :priority, class: "form-label" %>
-    <%= form.select :priority,
-      options_for_select(Task.priorities.map { |key, value| [key.titleize, Task.priorities.key(value)] }),
+    <%= form.select :priority, Task.priorities.map { |key, value| [key.titleize, key] },
       { selected: task.priority },
       class: 'form-control'
     %>

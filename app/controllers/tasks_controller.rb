@@ -12,6 +12,7 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
+    @tasks = current_user.tasks.order(created_at: :desc)
   end
 
   def create
@@ -20,7 +21,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.save
         format.html do
-          redirect_to tasks_url, notice: 'Task was successfully created.'
+          redirect_to new_task_url, notice: 'Task was successfully created.'
         end
       else
         format.html { render :new, status: :unprocessable_entity }

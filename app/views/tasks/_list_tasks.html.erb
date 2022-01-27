@@ -1,0 +1,15 @@
+<div class="col-md-12">
+  <h2>Tasks</h2>
+</div>
+
+<% tasks.each do |task| %>
+<div class="col-md-12 mb-3">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><%= task.title %></h5>
+      <%= task.description %>
+      <p><small>Created at <%= task.created_at %></small></p>
+    </div>
+  </div>
+</div>
+<% end %>

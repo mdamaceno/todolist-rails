@@ -1,0 +1,13 @@
+<% @task.comments.each do |comment| %>
+  <hr>
+  <span class="text-muted pull-right">
+    <small class="text-muted">
+      <%= comment.created_at.strftime("Posted on %m/%d/%Y at: %I:%M%p") %>
+    </small>
+  </span>
+  <strong class="text-success">
+    <%= link_to "@#{comment.user.profile.nickname}", profile_path(comment.user.profile)%>
+  </strong>
+  <p><%= comment.body %></p>
+  <hr>
+<% end %>

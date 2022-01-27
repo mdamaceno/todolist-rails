@@ -5,6 +5,7 @@ class TasksController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[search]
     
   def index
+    @tasks = current_user.tasks.order(priority: :desc, status: :desc, created_at: :desc)
   end
 
   def show 
@@ -12,7 +13,6 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.new
-    @tasks = current_user.tasks.order(created_at: :desc)
   end
 
   def create

@@ -1,4 +1,11 @@
-<%= form_with(model: task, url: tasks_url, local: true) do |form| %>
+<%= form_with(model: task, local: true) do |form| %>
+  <% if task.errors.any? %>
+    <ul>
+      <% task.errors.full_messages.each do |message| %>
+       <li class="text-danger"><%= message %></li>
+      <%end%>
+    </ul>
+  <%end%>
 
   <div class="mt-3">
     <%= form.label :title, style: "display: block", class: 'form-label' %>

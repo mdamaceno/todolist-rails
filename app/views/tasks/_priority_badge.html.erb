@@ -1,0 +1,7 @@
+<% if task.priority == 'high' %>
+<p><span class="badge bg-danger text-light"><%= task.priority %></span></p>
+<% elsif task.priority == 'medium' %>
+<p><span class="badge bg-warning text-dark"><%= task.priority %></span></p>
+<% else %>
+<p><span class="badge bg-primary text-light"><%= task.priority %></span></p>
+<% end %>

@@ -195,4 +195,34 @@ RSpec.describe "Tasks", type: :request do
       end
     end
   end
+
+  describe 'DELETE /tasks/:id' do
+    let(:task) { create(:task, user: user, status: Task.statuses[:complete]) }
+
+    context 'user is not logged in' do
+      it 'returns status 302' do
+        delete task_path(task)
+        expect(response).to have_http_status(302)
+      end
+    end
+
+    context 'when user is logged in' do
+      before do
+        create(:profile, user: user)
+        login_as(user)
+      end
+
+      context 'and when attributes are ok' do
+        it 'deletes a task' do
+          task = create(:task, user: user, status: Task.statuses[:complete])
+          tasks_before_count = Task.count
+          delete task_path(task)
+
+          expect(response).to have_http_status(302)
+          expect(response).to redirect_to(tasks_path)
+          expect(Task.count).to eq(tasks_before_count - 1)
+        end
+      end
+    end
+  end
 end

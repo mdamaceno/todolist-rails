@@ -154,4 +154,45 @@ RSpec.describe "Tasks", type: :request do
       end
     end
   end
+
+  describe 'PUT /tasks/:id' do
+    let(:task) { create(:task, user: user, status: Task.statuses[:complete]) }
+
+    context 'user is not logged in' do
+      it 'returns status 302' do
+        put task_path(task), params: { task: build(:task) }
+        expect(response).to have_http_status(302)
+      end
+    end
+
+    context 'when user is logged in' do
+      before do
+        create(:profile, user: user)
+        login_as(user)
+      end
+
+      context 'and when attributes are ok' do
+        it 'updates the task' do
+          put task_path(task), params: { task: { title: 'abcd' } }
+
+          expect(response).to have_http_status(302)
+          expect(Task.find(task.id).title).to eq('abcd')
+        end
+      end
+
+      context 'and when attributes are NOT ok' do
+        it 'returns status 422 when title is not valid' do
+          put task_path(task), params: { task: { title: '' } }
+          expect(response).to have_http_status(422)
+          expect(Task.find(task.id).title).to eq(task.title)
+        end
+
+        it 'returns status 422 when description is not valid' do
+          put task_path(task), params: { task: { description: nil } }
+          expect(response).to have_http_status(422)
+          expect(Task.find(task.id).description).to eq(task.description)
+        end
+      end
+    end
+  end
 end

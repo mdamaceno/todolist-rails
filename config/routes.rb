@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     collection do
       resources :reports, only: :index, controller: 'task_reports'
     end
+    resources :comments, only: %i[create destroy], controller: 'task_comments'
   end
 
   resources :profiles, only: %i[show new create update edit] do

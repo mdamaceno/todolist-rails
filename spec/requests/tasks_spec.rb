@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "Tasks", type: :request do
-  describe "GET /tasks" do
-    let(:user) { create(:user) }
+  let(:user) { create(:user) }
 
+  describe "GET /tasks" do
     context 'user is not logged in' do
       it 'returns status 302' do
         get tasks_path
@@ -44,8 +44,6 @@ RSpec.describe "Tasks", type: :request do
   end
 
   describe 'GET /tasks/:id' do
-    let(:user) { create(:user) }
-
     context 'user is not logged in' do
       it 'returns status 302' do
         task = create(:task, user: user)
@@ -78,8 +76,6 @@ RSpec.describe "Tasks", type: :request do
   end
 
   describe 'GET /tasks/:id/edit' do
-    let(:user) { create(:user) }
-
     context 'user is not logged in' do
       it 'returns status 302' do
         task = create(:task, user: user)
@@ -105,6 +101,56 @@ RSpec.describe "Tasks", type: :request do
         expect(response.body).to include(task.description)
         expect(response.body).to include(task.status.titleize)
         expect(response.body).to include(task.priority.titleize)
+      end
+    end
+  end
+
+  describe 'POST /tasks' do
+    context 'user is not logged in' do
+      it 'returns status 302' do
+        post tasks_path, params: { task: build(:task) }
+        expect(response).to have_http_status(302)
+      end
+    end
+
+    context 'when user is logged in' do
+      before do
+        create(:profile, user: user)
+        login_as(user)
+      end
+
+      before(:each) do
+        @tasks_before_count = Task.count
+      end
+
+      context 'and when attributes are ok' do
+        it 'creates a new task' do
+          post tasks_path, params: { task: attributes_for(:task) }
+
+          expect(response).to have_http_status(302)
+          expect(response).to redirect_to(new_task_path)
+          expect(Task.count).to eq(@tasks_before_count + 1)
+        end
+      end
+
+      context 'and when attributes are NOT ok' do
+        it 'returns status 422 when title is not valid' do
+          task_attributes = attributes_for(:task)
+          task_attributes.delete(:title)
+          post tasks_path, params: { task: task_attributes }
+
+          expect(response).to have_http_status(422)
+          expect(Task.count).to eq(@tasks_before_count)
+        end
+
+        it 'returns status 422 when description is not valid' do
+          task_attributes = attributes_for(:task)
+          task_attributes.delete(:description)
+          post tasks_path, params: { task: task_attributes }
+
+          expect(response).to have_http_status(422)
+          expect(Task.count).to eq(@tasks_before_count)
+        end
       end
     end
   end

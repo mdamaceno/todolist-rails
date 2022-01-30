@@ -9,5 +9,6 @@
     <%= link_to "@#{comment.user.profile.nickname}", profile_path(comment.user.profile)%>
   </strong>
   <p><%= comment.body %></p>
+  <p><%= link_to 'Destroy', [task, comment], method: :delete, class: 'card-link text-danger', data: { confirm: 'Are you sure?' } %></p>
   <hr>
 <% end %>

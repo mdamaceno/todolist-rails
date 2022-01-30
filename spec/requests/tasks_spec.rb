@@ -66,11 +66,45 @@ RSpec.describe "Tasks", type: :request do
         login_as(user)
         get task_path(task)
 
-        expect(response.body).to include("<h5 class=\"card-title\"><a href=\"/tasks/#{task.id}\">#{task.title}</a></h5>")
-        expect(response.body).to include("<p>#{comment.body}</p>")
+        expect(response.body).to include(task.title)
+        expect(response.body).to include(task_path(task))
         expect(response.body).to include(task.description)
+        expect(response.body).to include(task.status.titleize)
+        expect(response.body).to include("<p>#{comment.body}</p>")
         expect(response.body).to include(comment.user.profile.nickname)
         expect(response).to have_http_status(200)
+      end
+    end
+  end
+
+  describe 'GET /tasks/:id/edit' do
+    let(:user) { create(:user) }
+
+    context 'user is not logged in' do
+      it 'returns status 302' do
+        task = create(:task, user: user)
+        get edit_task_path(task)
+        expect(response).to have_http_status(302)
+      end
+    end
+
+    context 'user is logged in' do
+      before do
+        create(:profile, user: user)
+      end
+
+      it 'can see a form to edit the task' do
+        task = create(:task, user: user, status: Task.statuses[:complete])
+
+        login_as(user)
+        get edit_task_path(task)
+
+        expect(response).to have_http_status(200)
+        expect(response.body).to include(task.title)
+        expect(response.body).to include(task_path(task))
+        expect(response.body).to include(task.description)
+        expect(response.body).to include(task.status.titleize)
+        expect(response.body).to include(task.priority.titleize)
       end
     end
   end

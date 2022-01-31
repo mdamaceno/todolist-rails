@@ -4,10 +4,12 @@ class TasksController < ApplicationController
   before_action :find_task, only: %i[edit update show confirm_delete destroy delete_comment]
   skip_before_action :verify_authenticity_token, only: %i[search]
     
+  include UseCases
+
   def index
-    tasks = current_user.tasks.order(priority: :desc)
-    @completed_tasks = tasks.complete
-    @not_completed_tasks = tasks.incomplete
+    tasks_grouped_by_status = TasksGroupedByStatus.new(user: current_user).call
+    @completed_tasks = tasks_grouped_by_status[:complete]
+    @not_completed_tasks = tasks_grouped_by_status[:incomplete]
   end
 
   def show 

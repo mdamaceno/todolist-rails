@@ -4,8 +4,10 @@ module UseCases
       @user = user
     end
 
-    def call
+    def call(search: nil)
       tasks = @user.tasks.order(priority: :desc)
+
+      tasks = tasks.search_title_or_description(search) unless search.nil?
 
       { complete: tasks.complete, incomplete: tasks.incomplete }
     end

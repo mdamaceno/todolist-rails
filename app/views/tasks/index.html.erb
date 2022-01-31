@@ -1,5 +1,13 @@
 <div class="container">
   <div class="row mt-5">
+    <div class="col-md-12">
+      <h2>Tasks</h2>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <%= render 'tasks/search_form' %>
+  </div>
+  <div class="row mt-5">
     <%= render 'tasks/list_tasks',
       completed_tasks: @completed_tasks,
       not_completed_tasks: @not_completed_tasks

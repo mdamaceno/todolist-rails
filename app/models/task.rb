@@ -9,4 +9,6 @@ class Task < ApplicationRecord
 
   belongs_to :user
   has_many :comments, dependent: :destroy
+
+  scope :search_title_or_description, -> (search) { where('title like ? or description like ?', "%#{search}%", "%#{search}%") }
 end

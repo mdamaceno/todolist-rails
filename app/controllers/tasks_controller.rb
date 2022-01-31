@@ -7,7 +7,8 @@ class TasksController < ApplicationController
   include UseCases
 
   def index
-    tasks_grouped_by_status = TasksGroupedByStatus.new(user: current_user).call(search: params[:search])
+    search = sanitize_sql_like(params[:search]) if params[:search].present?
+    tasks_grouped_by_status = TasksGroupedByStatus.new(user: current_user).call(search: search)
     @completed_tasks = tasks_grouped_by_status[:complete]
     @not_completed_tasks = tasks_grouped_by_status[:incomplete]
   end

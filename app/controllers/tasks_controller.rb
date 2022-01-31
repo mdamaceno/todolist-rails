@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class TasksController < ApplicationController
   before_action :authenticate_user!
   before_action :user_profile?
   before_action :find_task, only: %i[edit update show confirm_delete destroy delete_comment]
   skip_before_action :verify_authenticity_token, only: %i[search]
-    
+
   include UseCases
 
   def index
@@ -13,7 +15,7 @@ class TasksController < ApplicationController
     @not_completed_tasks = tasks_grouped_by_status[:incomplete]
   end
 
-  def show 
+  def show
     @comment = Comment.new
     @comments = @task.comments.order(created_at: :desc)
   end
@@ -36,10 +38,9 @@ class TasksController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
-  def update 
+  def update
     respond_to do |format|
       if @task.update(task_params)
         format.html { redirect_to tasks_url, notice: 'Task was successfully updated.' }
@@ -57,23 +58,20 @@ class TasksController < ApplicationController
     end
   end
 
-  def complete
-  end
+  def complete; end
 
-  def incomplete
-  end
+  def incomplete; end
 
   private
 
   def task_params
     params.require(:task).permit(:title, :description, :status, :priority)
-  end  
+  end
 
-  def comment_params
-  end 
+  def comment_params; end
 
-  def sanitize_sql_like(string, escape_character = "\\")
-    pattern = Regexp.union(escape_character, "%", "_")
+  def sanitize_sql_like(string, escape_character = '\\')
+    pattern = Regexp.union(escape_character, '%', '_')
     string.gsub(pattern) { |x| [escape_character, x].join }
   end
 
@@ -81,4 +79,3 @@ class TasksController < ApplicationController
     @task = current_user.tasks.find(params[:id])
   end
 end
-
